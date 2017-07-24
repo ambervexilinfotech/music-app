@@ -1,0 +1,98 @@
+
+.hbox>aside, .hbox>section {
+    display: table-cell;
+    vertical-align: top;
+    height: 583px;
+    float: none;
+}
+.col-md-12.second-row {
+  border-top: 1px solid #ccc;
+  padding: 11px;
+}
+.mobile-table-responsive .col-md-4 {
+  line-height: 26px;
+  padding: 0;
+}
+.mobile-table-responsive
+    {
+        display:none;
+    }
+@media screen and (max-width: 1024px)
+{
+    .mobile-table-responsive
+    {
+        display:block;
+    }
+    .table-responsive
+    {
+        display:none;
+    }
+    .mobile-table-responsive .col-md-2:last-child {
+  padding: 0;
+}
+#fisrt-row .col-md-2:nth-child(2), #fisrt-row  .col-md-2:nth-child(3), #fisrt-row  .col-md-2:nth-child(4)
+{
+display:none;
+}
+#fisrt-row .col-md-2:last-child   {
+  float: left;
+}
+}
+
+@media screen and (max-width: 767px)
+{
+    .container.aside-xl .h1.font-bold {
+  font-size: 25px !important;
+}
+.modal-body .wrapper-md {
+  padding: 10px !important;
+}
+
+}
+@media screen and (max-width: 1023px)
+{
+#fisrt-row {
+  display: none;
+}
+.mobile-table-responsive .col-md-2:nth-child(3) {
+  display: none;
+}
+}
+.table.table-striped.m-b-none audio {
+  padding-top: 5px;
+}
+
+
+.caret {
+  display: none;
+}
+@media screen and (min-width: 768px)
+{
+    .navbar-right .dropdown-toggle.bg.clear > span {
+  color: #fff;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  margin: -8px 5px !important;
+  padding: 8px 4px !important;
+}
+
+.navbar-right {
+  background: #36b0c8 none repeat scroll 0 0;
+}
+.navbar-right:hover {
+  background: #36b0c8 !important;
+}
+.dropdown-toggle.bg.clear
+{ 
+  background: #36b0c8 !important;
+}
+
+}
+
+.bg-info .text-muted  {
+    color: #c3e6ed !important;
+    width: 100% !important;
+    border-radius: 55px !important;
+    margin: 10px 0 !important;
+    padding: 11px !important;
+}

@@ -1,0 +1,24 @@
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp bg-info">
+  <flash-messages></flash-messages>
+  <div class="container aside-xl"> <a class="navbar-brand block" href=""><span class="h1 font-bold">Digital Radio</span></a>
+    <section class="m-b-lg">
+      <header class="wrapper text-center"> <strong>Sign in to get in touch</strong> </header>
+
+      <form [formGroup]="LoginForm" (ngSubmit)="login()">
+        <div class="form-group">
+          <input type="email" placeholder="Email" formControlName="email" [(ngModel)]="loginData.email" class="form-control rounded input-lg text-center no-border">
+          <p *ngIf="!LoginForm.controls.email.valid  && LoginForm.controls.email.dirty" class="danger">*Please enter a valid email.</p>
+        </div>
+        <div class="form-group">
+          <input formControlName="password" type="password" [(ngModel)]="loginData.password" placeholder="Password" class="form-control rounded input-lg text-center no-border">
+          <p *ngIf="!LoginForm.controls.password.valid  && LoginForm.controls.password.dirty" class="danger" text-wrap>*Password must contain minimum six characters, at least one uppercase letter, one lowercase letter, one number</p>
+        </div>
+        <button type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded" [disabled]="!LoginForm.valid"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Sign in</span><spinner-component [spinnerShow]="loader"></spinner-component></button>
+
+        <div class="text-center m-t m-b"><a routerLink="/forgetPassword"><small>Forgot password?</small></a></div>
+        <div class="line line-dashed"></div>
+        <p class="text-muted text-center"><small>Do not have an account?</small></p> <a routerLink="/register" class="btn btn-lg btn-info btn-block rounded">Create an account</a>
+      </form>
+    </section>
+  </div>
+</section>

@@ -1,0 +1,387 @@
+<section class="vbox">
+  <!--audio player-->
+  <audio  #audioplayer src="{{baseurl}}/assets/audios/{{list}}" [autoplay]="autoplay" [controls]="controls" [volume]="volume"
+    [loop]="loop" [preload]="preload" [muted]="muted">
+  </audio>
+
+  <button type="button" (click)="play()" *ngIf="playButton">Play</button>
+  <button type="button" (click)="pause()" *ngIf="pauseButton">Pause</button>
+  <button type="button" (click)="previousTrack()" *ngIf="selectableButton">Previous</button>
+  <button type="button" (click)="nextTrack()" *ngIf="selectableButton">Next</button>
+  <button type="button" (click)="muteVideo()" *ngIf="muteButton">Mute</button>
+  <!--audio player-->
+  <flash-messages></flash-messages>
+  <header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
+    <div class="navbar-header aside bg-info dk"> <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html"> <i class="icon-list"></i> </a>      <a href="" class="navbar-brand text-lt"> <i class="icon-earphones"></i> <img src="../../assets/images/logo.png" alt="." class="hide"> <span class="hidden-nav-xs m-l-sm">Digital Radio</span> </a>      <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user"> <i class="icon-settings"></i> </a> </div>
+
+    <ul class="nav navbar-nav hidden-xs">
+      <li> <a href="#nav,.navbar-header" data-toggle="class:nav-xs,nav-xs" class="text-muted"> <i class="fa fa-indent text"></i> <i class="fa fa-dedent text-active"></i> </a>        </li>
+    </ul>
+    <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
+      <div class="form-group">
+        <div class="input-group"> <span class="input-group-btn"> <button type="submit" class="btn btn-sm bg-white btn-icon rounded"><i class="fa fa-search"></i></button> </span>          <input type="text" class="form-control input-sm no-border rounded" placeholder="Search songs"> </div>
+      </div>
+    </form>
+    <div class="navbar-right ">
+
+      <ul class="nav navbar-nav m-n hidden-xs nav-user user">
+        <!--<li class="hidden-xs"> <a href="#" class="dropdown-toggle lt" data-toggle="dropdown"> <i class="icon-bell"></i> <span class="badge badge-sm up bg-danger count">2</span> </a>
+          <section class="dropdown-menu aside-xl animated fadeInUp">
+            <section class="panel bg-white">
+              <div class="panel-heading b-light bg-light"> <strong>You have <span class="count">2</span> notifications</strong> </div>
+              <div class="list-group list-group-alt">
+                <a href="#" class="media list-group-item"> <span class="pull-left thumb-sm"> <img src="../../assets/images/a0.png" alt="..." class="img-circle"> </span> <span class="media-body block m-b-none"> Use awesome animate.css<br> <small class="text-muted">10 minutes ago</small> </span> </a>                <a href="#" class="media list-group-item"> <span class="media-body block m-b-none"> 1.0 initial released<br> <small class="text-muted">1 hour ago</small> </span> </a>                </div>
+              <div class="panel-footer text-sm"> <a href="#" class="pull-right"><i class="fa fa-cog"></i></a> <a href="#notes" data-toggle="class:show animated fadeInRight">See all the notifications</a>                </div>
+            </section>
+          </section>
+        </li>-->
+        <li *ngIf="!user"><a routerLink="/login">Sign In/Sign Up</a></li>
+        <li *ngIf="user" class="dropdown">
+          <a class="dropdown-toggle bg clear" data-toggle="dropdown"> 
+            <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm"> 
+              <img *ngIf="user.photo!=''" src="{{baseurl}}/assets/images/{{user.photo}}" alt="..."> 
+              <img *ngIf="user.photo==''" src="../../assets/images/noImage.jpg" alt="..."> 
+              </span> 
+              <span *ngIf="user.name">{{user.name}} </span>
+              <!--<b class="caret"></b> -->
+          </a>
+          <ul class="dropdown-menu">
+            <!--<li> <span class="arrow top"></span> <a href="">Settings</a> </li>-->
+            <!--<li> <a routerLink="/profile">Profile</a> </li>-->
+            <!--<li> <a href=""> <span class="badge bg-danger pull-right">3</span> Notifications </a> </li>
+            <li> <a href="">Help</a> </li>-->
+            <li class="divider"></li>
+            <!--<li> <a (click)="logout()">Logout</a> </li>-->
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <section>
+    <section class="hbox stretch">
+
+      <!-- .aside -->
+      <aside class="bg-black dk aside hidden-print" id="nav">
+        <section class="vbox">
+          <section class="w-f-md scrollable">
+            <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railOpacity="0.2">
+              <!-- nav -->
+              <nav class="nav-primary hidden-xs">
+                <ul class="nav bg clearfix">
+                  <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted"> Songlist </li>
+                  <!--<li> <a routerLink="/music"> <i class="fa fa-home" aria-hidden="true"></i> <span class="font-bold">Home</span> </a></li>-->
+                  <li *ngIf="user"> <a routerLink="/profile"> <i class="fa fa-user" aria-hidden="true"></i> <span class="font-bold">Profile</span></a></li>
+                  <li> <a routerLink="/category"> <i class="icon-drawer icon text-primary-lter"></i> <span class="font-bold">Category</span></a></li>
+                  <li *ngIf="user"> <a routerLink="/playlist"> <i class="icon-list icon text-info-dker"></i> <span class="font-bold">Playlist</span></a></li>
+                  <li *ngIf="user"> <a (click)="logout()"> <i class="fa fa-sign-out" aria-hidden="true"></i> <span class="font-bold">Logout</span></a></li>
+                  <!--<li> <a routerLink="/whatsnew"> <i class="icon-disc icon text-success"></i> <span class="font-bold">What's new</span> </a></li>
+                  <li> <a routerLink="/genres"> <i class="icon-music-tone-alt icon text-info"></i> <span class="font-bold">Genres</span> </a></li>-->
+                  <!--<li> <a href=""> <i class="icon-drawer icon text-primary-lter"></i> <b class="badge bg-primary pull-right">6</b> <span class="font-bold">Events</span> </a></li>-->
+                  <!--<li> <a href="" data-target="#content" data-el="#bjax-el" data-replace="true"> <i class="icon-social-youtube icon text-primary"></i> <span class="font-bold">Video</span> </a>                    </li>
+                  <li class="m-b hidden-nav-xs"></li>-->
+                </ul>
+                <ul class="nav" data-ride="collapse">
+                  <!--<li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted"> Interface </li>
+                  <li> <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="fa fa-angle-left text"></i> <i class="fa fa-angle-down text-active"></i> </span> <i class="icon-screen-desktop icon"> </i> <span>Layouts</span> </a>
+                    <ul class="nav dk text-sm">
+                      <li> <a href="layout-color.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Color option</span> </a>                        </li>
+                      <li> <a href="layout-boxed.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Boxed layout</span> </a>                        </li>
+                      <li> <a href="layout-fluid.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Fluid layout</span> </a>                        </li>
+                    </ul>
+                  </li>
+                  <li class="active"> <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="fa fa-angle-left text"></i> <i class="fa fa-angle-down text-active"></i> </span> <i class="icon-chemistry icon"> </i> <span>UI Kit</span> </a>
+                    <ul class="nav dk text-sm">
+                      <li> <a href="buttons.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Buttons</span> </a>                        </li>
+                      <li> <a href="icons.html" class="auto"> <b class="badge bg-info pull-right">369</b> <i class="fa fa-angle-right text-xs"></i> <span>Icons</span> </a>                        </li>
+                      <li> <a href="grid.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Grid</span> </a>                        </li>
+                      <li> <a href="widgets.html" class="auto"> <b class="badge bg-dark pull-right">8</b> <i class="fa fa-angle-right text-xs"></i> <span>Widgets</span> </a>                        </li>
+                      <li> <a href="components.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Components</span> </a>                        </li>
+                      <li> <a href="list.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>List group</span> </a>                        </li>
+                      <li class="active"> <a href="#table" class="auto"> <span class="pull-right text-muted"> <i class="fa fa-angle-left text"></i> <i class="fa fa-angle-down text-active"></i> </span> <i class="fa fa-angle-right text-xs"></i> <span>Table</span> </a>
+                        <ul class="nav dker">
+                          <li> <a href="table-static.html"> <i class="fa fa-angle-right"></i> <span>Table static</span> </a> </li>
+                          <li class="active"> <a href="table-datatable.html"> <i class="fa fa-angle-right"></i> <span>Datatable</span> </a> </li>
+                        </ul>
+                      </li>
+                      <li> <a href="#form" class="auto"> <span class="pull-right text-muted"> <i class="fa fa-angle-left text"></i> <i class="fa fa-angle-down text-active"></i> </span> <i class="fa fa-angle-right text-xs"></i> <span>Form</span> </a>
+                        <ul class="nav dker">
+                          <li> <a href="form-elements.html"> <i class="fa fa-angle-right"></i> <span>Form elements</span> </a>                            </li>
+                          <li> <a href="form-validation.html"> <i class="fa fa-angle-right"></i> <span>Form validation</span> </a>                            </li>
+                          <li> <a href="form-wizard.html"> <i class="fa fa-angle-right"></i> <span>Form wizard</span> </a> </li>
+                        </ul>
+                      </li>
+                      <li> <a href="chart.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Chart</span> </a>                        </li>
+                      <li> <a href="portlet.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Portlet</span> </a>                        </li>
+                      <li> <a href="timeline.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Timeline</span> </a>                        </li>
+                    </ul>
+                  </li>
+                  <li> <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="fa fa-angle-left text"></i> <i class="fa fa-angle-down text-active"></i> </span> <i class="icon-grid icon"> </i> <span>Pages</span> </a>
+                    <ul class="nav dk text-sm">
+                      <li> <a href="profile.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Profile</span> </a>                        </li>
+                      <li> <a href="blog.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Blog</span> </a>                        </li>
+                      <li> <a href="invoice.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Invoice</span> </a>                        </li>
+                      <li> <a href="gmap.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Google Map</span> </a>                        </li>
+                      <li> <a href="jvectormap.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Vector Map</span> </a>                        </li>
+                      <li> <a href="signin.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Signin</span> </a>                        </li>
+                      <li> <a href="signup.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Signup</span> </a>                        </li>
+                      <li> <a href="404.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>404</span> </a> </li>
+                    </ul>
+                  </li>-->
+                </ul>
+                <!--<ul class="nav text-sm">
+                  <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted"> <span class="pull-right"><a href="#"><i class="icon-plus i-lg"></i></a></span> Playlist
+                  </li>
+                  <li> <a href="#"> <i class="icon-music-tone icon"></i> <span>Hip-Pop</span> </a> </li>
+                  <li> <a href="#"> <i class="icon-playlist icon text-success-lter"></i> <b class="badge bg-success dker pull-right">9</b> <span>Jazz</span> </a>                    </li>
+                </ul>-->
+              </nav>
+              <!-- / nav -->
+            </div>
+          </section>
+          <!--<footer class="footer hidden-xs no-padder text-center-nav-xs">
+            <div class="bg hidden-xs ">
+              <div class="dropdown dropup wrapper-sm clearfix"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left m-l-xs"> <img src="../../assets/images/a3.png" class="dker" alt="..."> <i class="on b-black"></i> </span> <span class="hidden-nav-xs clear"> <span class="block m-l"> <strong class="font-bold text-lt">John.Smith</strong> <b class="caret"></b> </span> <span class="text-muted text-xs block m-l">Art Director</span> </span> </a>
+                <ul class="dropdown-menu animated fadeInRight aside text-left">
+                  <li> <span class="arrow bottom hidden-nav-xs"></span> <a href="#">Settings</a> </li>
+                  <li>
+                    <a href="profile.html">Profile</a> </li>
+                  <li> <a href="#"> <span class="badge bg-danger pull-right">3</span> Notifications </a> </li>
+                  <li> <a href="docs.html">Help</a> </li>
+                  <li class="divider"></li>
+                  <li> <a href="modal.lockme.html" data-toggle="ajaxModal">Logout</a> </li>
+                </ul>
+              </div>
+            </div>
+          </footer>-->
+        </section>
+      </aside>
+      <!-- /.aside -->
+      <section id="content">
+        <section class="vbox">
+          <section class="scrollable padder">
+            <div class="m-b-md">
+              <spinner-component [spinnerShow]="loader"></spinner-component>
+              <button *ngIf="user && user.type==2" class="btn btn-primary pull-right text-muted m-t-lg" (click)="lgModal.show()">Add Songs</button>
+              <h3 class="m-b-none">SongList</h3>
+
+              <!--Add song model -->
+              <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title pull-left">Add Song</h4>
+                      <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                    </div>
+                    <div class="modal-body">
+                      <section id="content" class="m-t-lg wrapper-md animated fadeInDown bg-info">
+
+                        <div class="container aside-xl"> <a class="navbar-brand block" href=""><span class="h1 font-bold">Digital Radio</span></a>
+                          <section class="m-b-lg">
+                            <header class="wrapper text-center"> <strong>Add Song</strong> </header>
+
+                            <form [formGroup]="songForm" (ngSubmit)="addSong()">
+                              <div class="form-group">
+                                <input placeholder="Song Title*" formControlName="title" [(ngModel)]="songData.title" class="form-control rounded input-lg text-center no-border">
+                                <p *ngIf="!songForm.controls.title.valid  && songForm.controls.title.dirty" class="danger">*Please enter a valid name.</p>
+                              </div>
+                              <div class="form-group">
+                                <input placeholder="Enter movie name" formControlName="movie" [(ngModel)]="songData.movie" class="form-control rounded input-lg text-center no-border">
+                              </div>
+                              <div class="form-group">
+                                <input placeholder="Enter actor name" formControlName="actors" [(ngModel)]="songData.actors" class="form-control rounded input-lg text-center no-border">
+                              </div>
+                              <div class="form-group">
+                                <input placeholder="Enter singer name" formControlName="singer" [(ngModel)]="songData.singer" class="form-control rounded input-lg text-center no-border">
+                              </div>
+                              <div class="form-group">
+                                <input placeholder="Enter album name" formControlName="album" [(ngModel)]="songData.album" class="form-control rounded input-lg text-center no-border">
+                              </div>
+                              <div class="form-group">
+                                <input placeholder="Enter lyrics" formControlName="lyrics" [(ngModel)]="songData.lyrics" class="form-control rounded input-lg text-center no-border">
+                              </div>
+                              <div class="form-group">
+                                <input placeholder="Enter lyricist name" formControlName="lyricist" [(ngModel)]="songData.lyricist" class="form-control rounded input-lg text-center no-border">
+                              </div>
+
+                              <div class="form-group">
+                                <select formControlName="genre" [(ngModel)]="songData.genre" class="form-control rounded input-lg text-center no-border">                               
+                                  <option *ngFor="let genre of genres" [value]="genre.name">{{genre.name}}</option>
+                                </select>
+                              </div>
+                              <!--<div class="form-group">
+                                <label>Upload Cover Photo</label>
+                                <input type="file" formControlName="photo" name="photo" ng2FileSelect [uploader]="uploader" class="form-control rounded input-lg text-center no-border"
+                                  accept="image/*" />
+                              </div>-->
+                              <div class="form-group">
+                                <label>Upload Song*</label>
+                                <input type="file" formControlName="audio" name="audio" ng2FileSelect [uploader]="uploader" class="form-control rounded input-lg text-center no-border"
+                                  accept="audio/*" />
+                              </div>
+
+                              <button type="submit" (click)="lgModal.hide()" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded" [disabled]="!songForm.valid"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Add</span></button>
+                            </form>
+                          </section>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--add song-->
+
+            </div>
+            <section class="panel panel-default">
+              <header class="panel-heading"> Songs <i class="fa fa-info-sign text-muted" data-toggle="tooltip" data-placement="bottom" data-title="ajax to load the data."></i>                </header>
+              <div class="table-responsive">
+                <table class="table table-striped m-b-none" data-ride="datatables">
+                  <thead>
+                    <tr>
+                      <th style="width:30%">Title</th>
+                      <th style="width:5%">Duration</th>
+                      <th style="width:9%">Size</th>
+                      <th style="width:26%">Artist</th>
+                      <th style="width:30%">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let song of allSongs;let i=index">
+                      <td><span *ngIf="song.title!=''">{{song.title}}</span>
+
+                        <audio controls *ngIf="song.audioName==''">
+                          <source src="http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.mp4" type='audio/mp4'>
+                          <source src="http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga" type='audio/ogg; codecs=vorbis'>
+                          <p>Your audio does not support html5 audio element</p>
+                        </audio>
+                        <audio controls *ngIf="song.audioName!=''">
+                          <source src="{{baseurl}}/assets/audios/{{song.audioName}}" type='audio/mp3'>
+                          <p>Your audio does not support html5 audio element</p>
+                        </audio>
+
+
+                      </td>
+                      <td><span *ngIf="song.movie!=''">{{song.movie}}</span><span *ngIf="song.album!=''">{{song.album}}</span></td>
+                      <td><span *ngIf="song.size!=''">{{song.size/(1024*1024)| number : '1.2'}} MB</span></td>
+                      <td><span *ngIf="song.singer!=''">{{song.singer}}</span></td>
+                      <td>
+                        <button *ngIf="user && user.type==2" class="btn btn-default btn-sm" (click)="deleteSong(song._id,i)">Delete</button>
+                        <button *ngIf="song.audioName!=''" class="btn btn-default btn-sm"><a download href="{{baseurl}}/assets/audios/{{song.audioName}}">Download</a></button>
+                        <button class="btn btn-default btn-sm" *ngIf="!user" routerLink="/login">Add Playlist</button>
+                        <button class="btn btn-default btn-sm" *ngIf="user" (click)="sgModal.show()"><span (click)="storeSongId(song._id)" >Add Playlist</span> </button>
+
+
+
+
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="mobile-table-responsive">
+                <div class="col-md-12 table table-striped m-b-none" id="fisrt-row" data-ride="datatables">
+
+
+                  <div class="col-sm-6 col-md-6 col-lg-4">Title</div>
+                  <div class="col-md-2">Duration</div>
+                  <div class="col-md-2">Size</div>
+                  <div class="col-md-2">Artist</div>
+                  <div class="col-sm-6 col-md-6 col-md-2">Action</div>
+                </div>
+
+
+                <div class="col-md-12 second-row" *ngFor="let song of allSongs;let i=index">
+                  <div class="col-md-4"><span *ngIf="song.title!=''">{{song.title}}</span><br/>
+
+                    <audio controls *ngIf="song.audioName==''">
+                      <source src="http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.mp4" type='audio/mp4'>
+                      <source src="http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga" type='audio/ogg; codecs=vorbis'>
+                      <p>Your audio does not support html5 audio element</p>
+                    </audio>
+                    <audio controls *ngIf="song.audioName!=''">
+                      <source src="{{baseurl}}/assets/audios/{{song.audioName}}" type='audio/mp3'>
+                      <p>Your audio does not support html5 audio element</p>
+                    </audio>
+
+
+                  </div>
+                  <div class="col-md-2"><span *ngIf="song.movie!=''">{{song.movie}}</span><span *ngIf="song.album!=''">{{song.album}}</span></div>
+                  <div class="col-md-2"><span *ngIf="song.size!=''">{{song.size/(1024*1024)| number : '1.2'}} MB</span></div>
+                  <div class="col-md-2"><span *ngIf="song.singer!=''">{{song.singer}}</span></div>
+                  <div class="col-md-2">
+                    <button *ngIf="user && user.type==2" class="btn btn-default btn-sm" (click)="deleteSong(song._id,i)">Delete</button>
+                    <button *ngIf="song.audioName!=''" class="btn btn-default btn-sm"><a download href="{{baseurl}}/assets/audios/{{song.audioName}}">Download</a></button>
+                    <button class="btn btn-default btn-sm" *ngIf="!user" routerLink="/login">Add Playlist</button>
+                    <button class="btn btn-default btn-sm" *ngIf="user" (click)="sgModal.show()"><span (click)="storeSongId(song._id)" >Add Playlist</span> </button>
+
+
+
+                  </div>
+                </div>
+
+
+
+              </div>
+
+              <!--Add playlist model -->
+              <div bsModal #sgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title pull-left">Add Playlist</h4>
+                      <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                    </div>
+                    <div class="modal-body">
+                      <section id="content" class="m-t-lg wrapper-md animated fadeInDown bg-info">
+                        <div class="container aside-xl"> <a class="navbar-brand block" href=""><span class="h1 font-bold">Digital Radio</span></a>
+                          <section class="m-b-lg">
+                            <header class="wrapper text-center"> <strong>Add Playlist</strong> </header>
+                            <form *ngIf="enablePlaylist" [formGroup]="playlistForm" (ngSubmit)="addPlaylist()">
+                              <div class="form-group">
+                                <input placeholder="Playlist Name" formControlName="name" [(ngModel)]="playlistData.name" class="form-control rounded input-lg text-center no-border">
+                                <p *ngIf="!playlistForm.controls.name.valid  && playlistForm.controls.name.dirty" class="danger">*Please enter a valid name.</p>
+                              </div>
+                              <div class="form-group">
+                                <input type="file" formControlName="photo" name="photo" ng2FileSelect [uploader]="uploaderPhoto" class="form-control rounded input-lg text-center no-border"
+                                  accept="image/*" />
+                              </div>
+
+                              <button type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded" [disabled]="!playlistForm.valid"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Add</span></button>
+                            </form>
+                            <button (click)="enableAddPlaylist()" class="btn btn-primary pull-right text-muted m-t-lg">Add Playlist</button>
+                            <form [formGroup]="playlistSongForm" (ngSubmit)="addSongToPlaylist()">
+                              <div class="form-group">
+                                <select formControlName="playlistId" [(ngModel)]="playlistSongData.playlistId" class="form-control rounded input-lg text-center no-border">                                                                                                  
+                                  <option id="option1" style="border-radius:20px !important;"  *ngFor="let playlist of userPlaylist" [value]="playlist._id">{{playlist.name}}</option>
+                                </select>
+                              </div>
+
+                              <button (click)="lgModal.hide()" type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded" [disabled]="!playlistSongForm.valid"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Add</span></button>
+                            </form>
+
+
+                          </section>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--Add playlist model -->
+
+
+
+
+
+            </section>
+          </section>
+        </section> <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>        </section>
+    </section>
+  </section>
+</section>

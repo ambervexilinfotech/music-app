@@ -1,0 +1,32 @@
+.hbox>aside, .hbox>section {
+    display: table-cell;
+    vertical-align: top;
+    height: 576px;
+    float: none;
+}
+.danger{
+    color:red;
+}
+
+@media screen and (max-width: 767px)
+{
+    aside.aside-lg.bg-light.lter.b-r {
+        display:block !important; 
+    height: auto !important;
+    }
+    .hbox[_ngcontent-c1] > aside[_ngcontent-c1], .hbox[_ngcontent-c1] > section[_ngcontent-c1]
+{
+    display:block !important; 
+    height: auto !important;
+}
+#edit .wrapper-md {
+	padding: 10px !important;
+}
+.form-group:nth-child(4) .input-lg {
+	height: 45px;
+	padding-top: 0px;
+	/* padding-left: 0px; */
+	/* width: 200px; */
+}
+}
+
